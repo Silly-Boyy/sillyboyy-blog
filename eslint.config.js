@@ -16,12 +16,7 @@ export default [
   ...pluginVue.configs['flat/essential'],
   {
     rules: {
-      'vue/multi-word-component-names': [
-        'error',
-        {
-          ignores: ['index']
-        }
-      ]
+      'vue/multi-word-component-names': 'off'
     }
   }
 ]
