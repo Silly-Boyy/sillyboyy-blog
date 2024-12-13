@@ -1,7 +1,8 @@
 <script setup>
 import {RouterView} from 'vue-router'
 import {onMounted} from 'vue'
-import {getCityApi} from "@/apis/weather.js";
+import {getLocationApi} from "@/apis/location.js";
+import {useEventListener} from "@vueuse/core";
 // 鼠标样式
 onMounted(() => {
   const mouse1 = document.querySelector('.mouse-1')
@@ -11,7 +12,7 @@ onMounted(() => {
   let targetX = 0, targetY = 0  // mouse2 目标位置
   let currentX = 0, currentY = 0 // mouse2 的当前位置
 
-  window.addEventListener('mousemove', (e) => {
+  useEventListener('mousemove', (e) => {
     X = e.clientX - mouse1.offsetWidth / 2
     Y = e.clientY - mouse1.offsetHeight / 2
     targetX = e.clientX - mouse2.offsetWidth / 2
@@ -19,12 +20,12 @@ onMounted(() => {
     mouse1.style.transform = `translate(${X}px, ${Y}px)`
   })
 
-  document.addEventListener('mouseleave', () => {
+  useEventListener(document, 'mouseleave', () => {
     mouse1.style.opacity = 0
     mouse2.style.opacity = 0
   })
 
-  document.addEventListener('mouseenter', () => {
+  useEventListener(document, 'mouseenter', () => {
     mouse1.style.opacity = 1
     mouse2.style.opacity = 1
   })
@@ -52,7 +53,7 @@ if (navigator.geolocation) {
       const latitude = position.coords.latitude; // 纬度
       const longitude = position.coords.longitude; // 经度
       console.log(`纬度: ${latitude}, 经度: ${longitude}`);
-      getCityApi(longitude, latitude).then(res => {
+      getLocationApi(longitude, latitude).then(res => {
         console.log(res)
       })
     },
