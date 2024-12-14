@@ -3,8 +3,11 @@ import {RouterView} from 'vue-router'
 import {onMounted} from 'vue'
 import {getLocationApi} from "@/apis/location.js";
 import {useEventListener} from "@vueuse/core";
+import {useLocationStore} from "@/stores/index.js";
+import {isMobile} from "@/utils/utils.js";
 // 鼠标样式
 onMounted(() => {
+  if (isMobile()) return
   const mouse1 = document.querySelector('.mouse-1')
   const mouse2 = document.querySelector('.mouse-2')
 
@@ -48,14 +51,18 @@ onMounted(() => {
 })
 // 获取位置
 if (navigator.geolocation) {
+  const userLocation = useLocationStore()
   navigator.geolocation.getCurrentPosition(
-    (position) => {
+    async (position) => {
       const latitude = position.coords.latitude; // 纬度
       const longitude = position.coords.longitude; // 经度
-      console.log(`纬度: ${latitude}, 经度: ${longitude}`);
-      getLocationApi(longitude, latitude).then(res => {
-        console.log(res)
-      })
+      const res = await getLocationApi(longitude, latitude)
+      const {data: {location}} = res
+      userLocation.setLocation(
+        location?.[0].adm1,
+        location?.[0].adm2,
+        location?.[0].name
+      )
     },
     (error) => {
       switch (error.code) {

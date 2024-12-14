@@ -2,14 +2,28 @@
 import {LogoGithubFilledIcon, LogoQqFilledIcon} from 'tdesign-icons-vue-next'
 import DouyinIcon from "@/components/Icons/DouyinIcon.vue";
 import BlurBox from "@/components/BlurBox.vue";
-import {ref} from "vue";
-import {useContactStore} from "@/stores/index.js";
-
+import {ref, onMounted, computed} from "vue";
+import {useContactStore, useLocationStore} from "@/stores/index.js";
+//contact 文字部分
 const useContact = useContactStore()
 const contactText = ref('')
 const setText = (text) => {
   contactText.value = text
 }
+// 获取定位
+const useLocation = useLocationStore()
+onMounted(() => {
+  console.log(useLocation.location)
+})
+
+const time = computed(() => {
+  const date = new Date()
+  return date.toLocaleString()
+})
+
+const height = computed(() => {
+  return document.documentElement.clientHeight
+})
 </script>
 
 <template>
@@ -20,6 +34,7 @@ const setText = (text) => {
         <div class="content">
           <img src="@/assets/sillyboyy.jpg" alt=""/>
           <h1>This is SillyBoyy</h1>
+          <h2>{{ height }}</h2>
         </div>
         <div class="loop loop-1"></div>
         <div class="loop loop-2"></div>
@@ -53,7 +68,9 @@ const setText = (text) => {
           </div>
         </BlurBox>
       </t-col>
-      <t-col :sm="3"></t-col>
+      <t-col :sm="3">
+        {{ time }}
+      </t-col>
       <t-col :sm="3"></t-col>
     </t-row>
   </div>
@@ -72,8 +89,8 @@ const setText = (text) => {
 .home {
   background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.4)), url('@/assets/bgImg.jpg');
   background-size: cover;
-  height: 100vh;
-  min-height: 700px;
+  height: 100svh;
+  min-height: 650px;
 
   .left {
     display: flex;
