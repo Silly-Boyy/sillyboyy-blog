@@ -26,11 +26,17 @@ function getCurrentPositionAsync(options = {}) {
 
 export const getPosition = async () => {
   if (navigator.geolocation) {
-    const position = await getCurrentPositionAsync();
-    const x = position.coords.longitude;
-    const y = position.coords.latitude;
-    return await getLocationApi(x, y)
+    try {
+      const position = await getCurrentPositionAsync();
+      const x = position.coords.longitude;
+      const y = position.coords.latitude;
+      return await getLocationApi(x, y)
+    } catch (err) {
+      console.error("获取地理位置失败", err);
+      return null;
+    }
   } else {
     console.error("浏览器不支持地理定位");
+    return null;
   }
 }

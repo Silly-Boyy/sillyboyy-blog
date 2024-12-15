@@ -1,10 +1,11 @@
 <template>
-  <span
-    class="gradient-text"
+  <component
+    :is="props.tag"
     :style="gradientStyle"
+    class="gradient-text"
   >
     <slot>默认文字</slot>
-  </span>
+  </component>
 </template>
 
 <script setup>
@@ -19,7 +20,11 @@ const props = defineProps({
   customColors: {
     type: Array,
     default: () => [] // 自定义渐变色数组
-  }
+  },
+  tag: {
+    type: String,
+    default: 'p', // 默认使用 span 标签
+  },
 });
 
 // 预设的渐变色（这里的每个渐变使用了三个颜色）
@@ -48,8 +53,6 @@ const gradientStyle = computed(() => {
 <style scoped>
 .gradient-text {
   display: inline-block;
-  font-size: 24px;
-  font-weight: bold;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent; /* 透明文字，利用 background-clip 实现文字渐变色 */
