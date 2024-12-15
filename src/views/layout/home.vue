@@ -2,8 +2,10 @@
 import {LogoGithubFilledIcon, LogoQqFilledIcon} from 'tdesign-icons-vue-next'
 import DouyinIcon from "@/components/Icons/DouyinIcon.vue";
 import BlurBox from "@/components/BlurBox.vue";
-import {ref, onMounted, computed} from "vue";
+import {ref, onMounted, onUnmounted} from "vue";
 import {useContactStore, useLocationStore} from "@/stores/index.js";
+import GradientText from "@/components/GradientText.vue";
+import {getPosition, getTime} from "@/utils/utils.js";
 //contact 文字部分
 const useContact = useContactStore()
 const contactText = ref('')
@@ -12,29 +14,37 @@ const setText = (text) => {
 }
 // 获取定位
 const useLocation = useLocationStore()
+onMounted(async () => {
+  const {data: {location}} = await getPosition();
+  const adm1 = location?.[0].adm1
+  const adm2 = location?.[0].adm2
+  const name = location?.[0].name
+  console.log(name)
+  useLocation.setLocation(adm1, adm2, name)
+})
+// 时间相关
+const currentTime = ref('')
+let timer
 onMounted(() => {
-  console.log(useLocation.location)
+  timer = setInterval(() => {
+    currentTime.value = getTime()
+  }, 1000)
 })
-
-const time = computed(() => {
-  const date = new Date()
-  return date.toLocaleString()
-})
-
-const height = computed(() => {
-  return document.documentElement.clientHeight
+onUnmounted(() => {
+  clearInterval(timer)
 })
 </script>
 
 <template>
   <div class="home">
     <t-row>
-      <t-col :sm="6" :xs="12" class="left" :style="{height: '100%'}">
+      <t-col :sm="6" :xs="12" class="left">
         <div class="nav"></div>
         <div class="content">
           <img src="@/assets/sillyboyy.jpg" alt=""/>
-          <h1>This is SillyBoyy</h1>
-          <h2>{{ height }}</h2>
+          <h1>
+            <GradientText>This is SillyBoyy</GradientText>
+          </h1>
         </div>
         <div class="loop loop-1"></div>
         <div class="loop loop-2"></div>
@@ -68,10 +78,15 @@ const height = computed(() => {
           </div>
         </BlurBox>
       </t-col>
-      <t-col :sm="3">
-        {{ time }}
+      <t-col :sm="6" :xs="0" class="right">
+        <BlurBox :width=500 :height=200 class="weather">
+          {{ useLocation.location.adm1 }}
+          {{ useLocation.location.adm2 }}
+          {{ useLocation.location.name }}
+        </BlurBox>
+        <t-row>
+        </t-row>
       </t-col>
-      <t-col :sm="3"></t-col>
     </t-row>
   </div>
 </template>
@@ -191,6 +206,14 @@ const height = computed(() => {
       border-radius: 38% 22% 35% 29%;
       animation: rotate 27.91s linear infinite;
     }
+  }
+
+  .right {
+    background-color: pink;
+    display: flex;
+    justify-content: center;
+    height: 300px;
+    align-items: center;
   }
 }
 </style>

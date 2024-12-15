@@ -11,9 +11,9 @@ onMounted(() => {
   const mouse1 = document.querySelector('.mouse-1')
   const mouse2 = document.querySelector('.mouse-2')
 
-  let X = 0, Y = 0 // 鼠标位置
-  let targetX = 0, targetY = 0  // mouse2 目标位置
-  let currentX = 0, currentY = 0 // mouse2 的当前位置
+  let X = -100, Y = -100 // 鼠标位置
+  let targetX = -100, targetY = -100  // mouse2 目标位置
+  let currentX = -100, currentY = -100 // mouse2 的当前位置
 
   useEventListener('mousemove', (e) => {
     X = e.clientX - mouse1.offsetWidth / 2
@@ -49,41 +49,6 @@ onMounted(() => {
 
   animate() // 启动动画循环
 })
-// 获取位置
-if (navigator.geolocation) {
-  const userLocation = useLocationStore()
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      const latitude = position.coords.latitude; // 纬度
-      const longitude = position.coords.longitude; // 经度
-      const res = await getLocationApi(longitude, latitude)
-      const {data: {location}} = res
-      userLocation.setLocation(
-        location?.[0].adm1,
-        location?.[0].adm2,
-        location?.[0].name
-      )
-    },
-    (error) => {
-      switch (error.code) {
-        case error.PERMISSION_DENIED:
-          console.error("用户拒绝访问地理位置");
-          break;
-        case error.POSITION_UNAVAILABLE:
-          console.error("位置信息不可用");
-          break;
-        case error.TIMEOUT:
-          console.error("请求超时");
-          break;
-        default:
-          console.error("未知错误");
-          break;
-      }
-    }
-  );
-} else {
-  console.error("浏览器不支持地理定位");
-}
 </script>
 
 <template>

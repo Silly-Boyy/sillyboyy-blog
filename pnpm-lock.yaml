@@ -32,6 +32,9 @@ importers:
       vue-router:
         specifier: ^4.4.5
         version: 4.5.0(vue@3.5.13)
+      vuesax:
+        specifier: 4.0.1-alpha.25
+        version: 4.0.1-alpha.25(vue@3.5.13)
     devDependencies:
       '@eslint/js':
         specifier: ^9.14.0
@@ -1664,6 +1667,11 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
+  vue-router@3.6.5:
+    resolution: {integrity: sha512-VYXZQLtjuvKxxcshuRAwjHnciqZVoXAjTjcqBTz4rKc8qih9g9pI3hbDjmqXaHdgL3v8pV6P8Z335XvHzESxLQ==}
+    peerDependencies:
+      vue: ^2
+
   vue-router@4.5.0:
     resolution: {integrity: sha512-HDuk+PuH5monfNuY+ct49mNmkCRK4xJAV9Ts4z9UFc4rzdDnxQLyCMGGc8pKhZhHTVzfanpNwB/lwqevcBwI4w==}
     peerDependencies:
@@ -1676,6 +1684,9 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  vuesax@4.0.1-alpha.25:
+    resolution: {integrity: sha512-cVLpKsem/YsMSbiy2s2M0O6rr8wrakOUFn0JYxtVQ1WgbVUD0/kU2/GMPVeRBNOh+30tRy2TKreFmjqc53vIBQ==}
 
   webpack-virtual-modules@0.6.2:
     resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
@@ -3262,6 +3273,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  vue-router@3.6.5(vue@3.5.13):
+    dependencies:
+      vue: 3.5.13
+
   vue-router@4.5.0(vue@3.5.13):
     dependencies:
       '@vue/devtools-api': 6.6.4
@@ -3274,6 +3289,12 @@ snapshots:
       '@vue/runtime-dom': 3.5.13
       '@vue/server-renderer': 3.5.13(vue@3.5.13)
       '@vue/shared': 3.5.13
+
+  vuesax@4.0.1-alpha.25(vue@3.5.13):
+    dependencies:
+      vue-router: 3.6.5(vue@3.5.13)
+    transitivePeerDependencies:
+      - vue
 
   webpack-virtual-modules@0.6.2: {}
 
