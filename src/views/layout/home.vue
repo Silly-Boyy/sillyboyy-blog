@@ -1,11 +1,28 @@
 <script setup>
-import {LogoGithubFilledIcon, LogoQqFilledIcon} from 'tdesign-icons-vue-next'
-import DouyinIcon from "@/components/Icons/DouyinIcon.vue";
 import BlurBox from "@/components/BlurBox.vue";
 import {ref, onMounted, onUnmounted} from "vue";
 import {useContactStore, useLocationStore} from "@/stores/index.js";
 import GradientText from "@/components/GradientText.vue";
 import {getPosition, getTime} from "@/utils/utils.js";
+import {QqOutlined, GithubOutlined} from '@vicons/antd'
+import {LogoTiktok} from '@vicons/ionicons5'
+import {Icon} from '@vicons/utils'
+//图标相关
+const icons = [
+  {
+    name: 'qq',
+    icon: QqOutlined
+  },
+  {
+    name: 'github',
+    icon: GithubOutlined
+  },
+  {
+    name: 'tiktok',
+    icon: LogoTiktok
+  }
+]
+const iconSize = ref(24)
 //contact 文字部分
 const useContact = useContactStore()
 const contactText = ref('')
@@ -19,7 +36,6 @@ onMounted(async () => {
   const adm1 = location?.[0].adm1
   const adm2 = location?.[0].adm2
   const name = location?.[0].name
-  console.log(name)
   useLocation.setLocation(adm1, adm2, name)
 })
 // 时间相关
@@ -37,8 +53,8 @@ onUnmounted(() => {
 
 <template>
   <div class="home">
-    <t-row>
-      <t-col :sm="6" :xs="12" class="left">
+    <n-grid item-responsive cols="2">
+      <n-gi span="2 768:1" class="left">
         <div class="nav"></div>
         <div class="content">
           <img src="@/assets/sillyboyy.jpg" alt=""/>
@@ -53,41 +69,34 @@ onUnmounted(() => {
         <div class="loop loop-5"></div>
         <BlurBox class="contact" :width=300 :height=100>
           <div class="icon">
-            <a class="icon-item qq">
-              <LogoQqFilledIcon
-                @mouseenter="setText(useContact.contact_text.qq)"
+            <Icon
+              :class="['icon-item', item.name]"
+              tag="a" color="#fff"
+              v-for="item in icons"
+              :key="item.name"
+            >
+              <component
+                :is="item.icon"
+                @mouseenter="setText(useContact.contact_text[item.name])"
                 @mouseleave="setText('')"
               />
-            </a>
-            <a class="icon-item github">
-              <LogoGithubFilledIcon
-                @mouseenter="setText(useContact.contact_text.github)"
-                @mouseleave="setText('')"
-              />
-            </a>
-            <a class="icon-item douyin">
-              <DouyinIcon
-                @mouseenter="setText(useContact.contact_text.douyin)"
-                @mouseleave="setText('')"
-              />
-            </a>
+            </Icon>
           </div>
           <div class="text">
             <!--TODO 后续添加随机名句接口-->
-            <p>"{{ contactText || '正在施工🚧...' }}"</p>
+            <p :style="{fontSize:'20px'}">"{{ contactText || '正在施工🚧...' }}"</p>
           </div>
         </BlurBox>
-      </t-col>
-      <t-col :sm="6" :xs="0" class="right">
+      </n-gi>
+      <n-gi span="0 768:1" class="right">
         <BlurBox :width=500 :height=200 class="weather">
           {{ useLocation.location.adm1 }}
           {{ useLocation.location.adm2 }}
           {{ useLocation.location.name }}
         </BlurBox>
-        <t-row>
-        </t-row>
-      </t-col>
-    </t-row>
+
+      </n-gi>
+    </n-grid>
   </div>
 </template>
 
@@ -135,20 +144,20 @@ onUnmounted(() => {
         width: 100%;
         height: 30%;
         display: flex;
+        justify-content: space-around;
+        align-items: center;
 
         .icon-item {
-          flex: 1;
+          width: 30px;
+          height: 30px;
+          font-size: 24px;
           display: flex;
           justify-content: center;
+          align-items: center;
 
-          .t-icon {
-            font-size: 24px;
-            color: #fff;
-
-            &:hover {
-              font-size: 30px;
-              transition: font-size 0.2s linear;
-            }
+          &:hover {
+            font-size: 30px;
+            transition: font-size 0.2s linear;
           }
         }
 
