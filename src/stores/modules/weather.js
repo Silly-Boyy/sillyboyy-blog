@@ -10,9 +10,10 @@ export const useWeatherStore = defineStore('sillyboyy-weather', () => {
   const fetchWeather = async () => {
     loading.value = true
     try {
-      await useLocation.fetchLocation()
-      const id = useLocation.location.locationId
-      const res = await getWeatherApi(id)
+      if (!useLocation.location) await useLocation.fetchLocation();
+      const {lat, lng} = useLocation.location.location
+      const res = await getWeatherApi(lat, lng)
+      console.log(res)
       weather.value = res.data.now
     } catch (err) {
       console.error(err)

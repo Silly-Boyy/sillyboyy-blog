@@ -22,13 +22,16 @@ const props = defineProps({
 const useWeather = useWeatherStore()
 useWeather.fetchWeather()
 const hasWeather = computed(() => {
-  return isEmpty(useWeather.weather)
+  return !isEmpty(useWeather.weather)
 })
 // 天气详情
 const weatherDetail = ref(false)
 // 获取城市
 const useLocation = useLocationStore()
-// 获取时间
+const hasLocation = computed(() => {
+  return !isEmpty(useLocation.location)
+})
+useLocation.fetchLocation()
 // 时间相关
 const currentTime = ref('')
 const currentDate = ref('')
@@ -52,7 +55,7 @@ onUnmounted(() => {
 <template>
   <BlurBox :height="props.height" :width="props.width" class="weather">
     <n-grid class="content" cols="5" item-responsive>
-      <n-gi v-if="!hasWeather" class="left" span="0 415:2">
+      <n-gi v-if="hasWeather" class="left" span="0 415:2">
         <i :class="[`qi-${useWeather.weather.icon}-fill`]"
            @mouseenter="weatherDetail = true"
            @mouseleave="weatherDetail = false"
@@ -83,11 +86,11 @@ onUnmounted(() => {
         </n-flex>
       </n-gi>
       <n-gi class="right" span="5 415:3">
-        <n-flex v-if="useLocation.location.adm2" class="city" justify="center">
+        <n-flex v-if="hasLocation" class="city" justify="center">
           <Icon size="30">
             <LocationCityFilled/>
           </Icon>
-          <span>{{ useLocation.location.adm2 + '-' + useLocation.location.name }}</span>
+          <span>{{ useLocation.location.ad_info.city + "-" + useLocation.location.ad_info.district }}</span>
         </n-flex>
         <n-flex v-else-if="useLocation.loading" align="center" class="else-city">
           获取定位中

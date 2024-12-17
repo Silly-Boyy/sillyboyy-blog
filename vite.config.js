@@ -35,7 +35,14 @@ export default defineConfig({
     },
   },
   server: {
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    proxy: {
+      '/map-api': {
+        target: 'https://apis.map.qq.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/map-api/, '')
+      }
+    }
   },
   base: './'
 })
