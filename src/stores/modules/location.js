@@ -15,11 +15,13 @@ export const useLocationStore = defineStore('sillyboyy-location', () => {
 
   // 📌 5. 获取当前位置的函数（集成 getPosition）
   const fetchLocation = async () => {
+    if (location.value && new Date().getTime() - location.value.time < 1000 * 60) return;
     loading.value = true; // 开启加载状态
     error.value = null; // 清除上次的错误
     try {
       const data = await getLocationApi();
       location.value = data.data?.result
+      location.value.time = new Date().getTime()
     } catch (err) {
       error.value = err; // 如果出错，设置
     }
@@ -32,4 +34,13 @@ export const useLocationStore = defineStore('sillyboyy-location', () => {
     error,
     fetchLocation, // 📢 暴露 fetchLocation 方法，供外部调用
   };
+}, {
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        paths: ['location'],
+      }
+    ]
+  }
 });
