@@ -46,7 +46,7 @@ const setText = (text) => {
         <div class="loop loop-3"></div>
         <div class="loop loop-4"></div>
         <div class="loop loop-5"></div>
-        <BlurBox :height=100 :width=300 class="contact">
+        <BlurBox class="contact" height='100px' width='300px'>
           <div class="icon">
             <Icon
               v-for="item in icons"

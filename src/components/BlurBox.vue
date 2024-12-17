@@ -1,12 +1,12 @@
 <script setup>
 const size = defineProps({
   width: {
-    type: Number,
-    default: 200
+    type: String,
+    default: '200px'
   },
   height: {
-    type: Number,
-    default: 200
+    type: String,
+    default: '200px'
   },
   hover: {
     type: Boolean,
@@ -16,15 +16,15 @@ const size = defineProps({
 </script>
 
 <template>
-  <div class="blur-box"
-       :style="{width:`${size.width}px`,height:`${size.height}px`}"
-       :class="{hover: size.hover}"
+  <div :class="{hover: size.hover}"
+       :style="{width:`${size.width}`,height:`${size.height}`}"
+       class="blur-box"
   >
     <slot/>
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .blur-box {
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0.3); /* 背景 50% 透明 */

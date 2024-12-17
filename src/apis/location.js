@@ -1,5 +1,5 @@
 import axios from "axios";
-import hefengjwtConstant from "@/utils/hefengjwtConstant.js";
+import Apikey from "@/utils/PrivateKey.js";
 
 export const getLocationApi = (x, y) => {
   x = x.toFixed(2)
@@ -7,7 +7,7 @@ export const getLocationApi = (x, y) => {
   return axios.get('https://geoapi.qweather.com/v2/city/lookup', {
     params: {
       location: `${x},${y}`,
-      key: hefengjwtConstant.apiKey
+      key: Apikey.hefengApiKey
     },
     timeout: 5000
   })

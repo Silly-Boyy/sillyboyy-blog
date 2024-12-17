@@ -28,4 +28,4 @@ coverage
 *.sw?
 
 *.tsbuildinfo
-**/hefengjwtConstant.js
+**/PrivateKey.js

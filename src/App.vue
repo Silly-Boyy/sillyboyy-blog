@@ -1,9 +1,7 @@
 <script setup>
 import {RouterView} from 'vue-router'
 import {onMounted} from 'vue'
-import {getLocationApi} from "@/apis/location.js";
 import {useEventListener} from "@vueuse/core";
-import {useLocationStore} from "@/stores/index.js";
 import {isMobile} from "@/utils/utils.js";
 // 鼠标样式
 onMounted(() => {

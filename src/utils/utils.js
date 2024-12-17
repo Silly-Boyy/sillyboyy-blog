@@ -37,7 +37,7 @@ function getCurrentPositionAsync(options = {}) {
 
     // 2️⃣ 超时的 Promise（5 秒超时）
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('获取位置超时 (Timeout)')), 5000);
+      setTimeout(() => reject(new Error('获取位置超时 (Timeout)')), 10000);
     });
 
     // 3️⃣ 使用 Promise.race 让两个竞争，哪个先返回就取哪个

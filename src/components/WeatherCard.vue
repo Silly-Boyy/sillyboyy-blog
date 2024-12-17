@@ -10,12 +10,12 @@ import {FaceIdError} from '@vicons/tabler'
 
 const props = defineProps({
   width: {
-    type: Number,
-    default: 500
+    type: String,
+    default: '36vw'
   },
   height: {
-    type: Number,
-    default: 200
+    type: String,
+    default: '200px'
   }
 })
 // 获取天气
@@ -32,12 +32,16 @@ const useLocation = useLocationStore()
 // 时间相关
 const currentTime = ref('')
 const currentDate = ref('')
+const updateTime = () => {
+  const obj = getTime()
+  currentTime.value = `${obj.hours}:${obj.minutes}:${obj.seconds}`
+  currentDate.value = `${obj.year}-${obj.month}-${obj.day}`
+}
+updateTime()
 let timer
 onMounted(() => {
   timer = setInterval(() => {
-    const obj = getTime()
-    currentTime.value = `${obj.hours}:${obj.minutes}:${obj.seconds}`
-    currentDate.value = `${obj.year}-${obj.month}-${obj.day}`
+    updateTime()
   }, 1000)
 })
 onUnmounted(() => {
@@ -47,8 +51,8 @@ onUnmounted(() => {
 
 <template>
   <BlurBox :height="props.height" :width="props.width" class="weather">
-    <n-grid class="content" cols="2">
-      <n-gi v-if="!hasWeather" class="left" span="1">
+    <n-grid class="content" cols="5" item-responsive>
+      <n-gi v-if="!hasWeather" class="left" span="0 415:2">
         <i :class="[`qi-${useWeather.weather.icon}-fill`]"
            @mouseenter="weatherDetail = true"
            @mouseleave="weatherDetail = false"
@@ -61,7 +65,7 @@ onUnmounted(() => {
           <n-gi>风速: {{ useWeather.weather.windSpeed }}公里/小时</n-gi>
         </n-grid>
       </n-gi>
-      <n-gi v-else class="else-left" span="1">
+      <n-gi v-else class="else-left" span="0 415:2">
         <n-flex v-if="useWeather.loading" vertical>
           <p>加载天气^-^</p>
           <n-spin stroke="#fff"/>
@@ -78,8 +82,8 @@ onUnmounted(() => {
           </p>
         </n-flex>
       </n-gi>
-      <n-gi class="right" span="1">
-        <n-flex v-if="useLocation.location.adm2" class="city">
+      <n-gi class="right" span="5 415:3">
+        <n-flex v-if="useLocation.location.adm2" class="city" justify="center">
           <Icon size="30">
             <LocationCityFilled/>
           </Icon>
@@ -157,6 +161,7 @@ onUnmounted(() => {
     .right {
       display: flex;
       flex-direction: column;
+      align-items: center;
 
       .city {
         margin: 20px 10px;
