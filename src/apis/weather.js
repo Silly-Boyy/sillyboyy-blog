@@ -6,6 +6,7 @@ export const getWeatherApi = (id) => {
     params: {
       location: id,
       key: hefengjwtConstant.apiKey
-    }
+    },
+    timeout: 5000
   })
 }

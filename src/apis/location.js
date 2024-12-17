@@ -8,6 +8,7 @@ export const getLocationApi = (x, y) => {
     params: {
       location: `${x},${y}`,
       key: hefengjwtConstant.apiKey
-    }
+    },
+    timeout: 5000
   })
 }

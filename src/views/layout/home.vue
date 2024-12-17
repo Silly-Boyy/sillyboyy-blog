@@ -1,9 +1,8 @@
 <script setup>
 import BlurBox from "@/components/BlurBox.vue";
-import {onMounted, onUnmounted, ref} from "vue";
+import {ref} from "vue";
 import {useContactStore} from "@/stores/index.js";
 import GradientText from "@/components/GradientText.vue";
-import {getTime} from "@/utils/utils.js";
 import {GithubOutlined, QqOutlined} from '@vicons/antd'
 import {LogoTiktok} from '@vicons/ionicons5'
 import {Icon} from '@vicons/utils'
@@ -29,18 +28,6 @@ const contactText = ref('')
 const setText = (text) => {
   contactText.value = text
 }
-
-// 时间相关
-const currentTime = ref('')
-let timer
-onMounted(() => {
-  timer = setInterval(() => {
-    currentTime.value = getTime()
-  }, 1000)
-})
-onUnmounted(() => {
-  clearInterval(timer)
-})
 </script>
 
 <template>
@@ -208,7 +195,10 @@ onUnmounted(() => {
   .right {
     display: flex;
     justify-content: center;
-    margin-top: 100px;
+
+    .weather {
+      margin-top: 100px;
+    }
   }
 }
 </style>

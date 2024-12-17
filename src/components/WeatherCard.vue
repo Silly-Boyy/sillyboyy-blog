@@ -1,8 +1,12 @@
 <script setup>
 import BlurBox from "@/components/BlurBox.vue";
-import {computed, defineProps, ref} from "vue";
-import {useWeatherStore} from "@/stores/index.js";
+import {computed, defineProps, onMounted, onUnmounted, ref} from "vue";
+import {useLocationStore, useWeatherStore} from "@/stores/index.js";
 import {isEmpty} from "lodash";
+import {Icon} from '@vicons/utils'
+import {LocationCityFilled, RestartAltFilled} from '@vicons/material'
+import {getTime} from "@/utils/utils.js";
+import {FaceIdError} from '@vicons/tabler'
 
 const props = defineProps({
   width: {
@@ -22,6 +26,23 @@ const hasWeather = computed(() => {
 })
 // 天气详情
 const weatherDetail = ref(false)
+// 获取城市
+const useLocation = useLocationStore()
+// 获取时间
+// 时间相关
+const currentTime = ref('')
+const currentDate = ref('')
+let timer
+onMounted(() => {
+  timer = setInterval(() => {
+    const obj = getTime()
+    currentTime.value = `${obj.hours}:${obj.minutes}:${obj.seconds}`
+    currentDate.value = `${obj.year}-${obj.month}-${obj.day}`
+  }, 1000)
+})
+onUnmounted(() => {
+  clearInterval(timer)
+})
 </script>
 
 <template>
@@ -40,15 +61,42 @@ const weatherDetail = ref(false)
           <n-gi>风速: {{ useWeather.weather.windSpeed }}公里/小时</n-gi>
         </n-grid>
       </n-gi>
-      <n-gi v-else class="left" span="1">
+      <n-gi v-else class="else-left" span="1">
         <n-flex v-if="useWeather.loading" vertical>
           <p>加载天气^-^</p>
           <n-spin stroke="#fff"/>
         </n-flex>
-        <p v-else>天气加载失败</p>
+        <n-flex v-else align="center" vertical>
+          <Icon color="#fff" size="75">
+            <FaceIdError/>
+          </Icon>
+          <p>
+            天气加载失败
+            <Icon size="30" @click="useWeather.fetchWeather()">
+              <RestartAltFilled/>
+            </Icon>
+          </p>
+        </n-flex>
       </n-gi>
       <n-gi class="right" span="1">
-
+        <n-flex v-if="useLocation.location.adm2" class="city">
+          <Icon size="30">
+            <LocationCityFilled/>
+          </Icon>
+          <span>{{ useLocation.location.adm2 + '-' + useLocation.location.name }}</span>
+        </n-flex>
+        <n-flex v-else-if="useLocation.loading" align="center" class="else-city">
+          获取定位中
+          <n-spin size="small" stroke="#fff"/>
+        </n-flex>
+        <n-flex v-else align="center" class="else-city">
+          获取定位失败
+          <Icon size="24" @click="useLocation.fetchLocation()">
+            <RestartAltFilled/>
+          </Icon>
+        </n-flex>
+        <h2 class="time">{{ currentTime }}</h2>
+        <h3 class="date">{{ currentDate }}</h3>
       </n-gi>
     </n-grid>
   </BlurBox>
@@ -90,6 +138,51 @@ const weatherDetail = ref(false)
         margin-top: 20px;
         color: #fff;
         text-align: center;
+      }
+    }
+
+    .else-left {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      p {
+        color: #fff;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .right {
+      display: flex;
+      flex-direction: column;
+
+      .city {
+        margin: 20px 10px;
+        width: 100%;
+        height: 12%;
+        color: #fff;
+        font-size: 20px;
+      }
+
+      .else-city {
+        margin: 20px 10px;
+        width: 100%;
+        height: 12%;
+        color: #fff;
+        font-size: 16px;
+      }
+
+      .time {
+        color: #fff;
+        font-size: 65px;
+      }
+
+      .date {
+        margin: 10px 10px;
+        color: #fff;
+        font-size: 16px;
       }
     }
   }
