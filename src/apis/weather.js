@@ -1,5 +1,5 @@
 import axios from "axios";
-import Apikey from "@/utils/PrivateKey.js";
+import Apikey from "../../public/PrivateKey.js";
 
 export const getWeatherApi = (lat, lng) => {
   lat = lat.toFixed(2)

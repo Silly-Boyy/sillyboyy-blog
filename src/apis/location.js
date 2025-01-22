@@ -1,5 +1,5 @@
 import axios from "axios";
-import Apikey from "@/utils/PrivateKey.js";
+import Apikey from "../../public/PrivateKey.js";
 
 export const getLocationApi = () => {
   return axios.get('/map-api/ws/location/v1/ip', {

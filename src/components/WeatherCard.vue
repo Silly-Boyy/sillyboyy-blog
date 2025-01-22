@@ -32,6 +32,14 @@ const hasLocation = computed(() => {
   return !isEmpty(useLocation.location)
 })
 useLocation.fetchLocation()
+const location = computed(() => {
+  const province = useLocation.location.ad_info.province
+  const city = useLocation.location.ad_info.city
+  const district = useLocation.location.ad_info.district
+  if (district) return city + "-" + district
+  if (city) return province + "-" + city
+  return province
+})
 // 时间相关
 const currentTime = ref('')
 const currentDate = ref('')
@@ -90,7 +98,7 @@ onUnmounted(() => {
           <Icon size="30">
             <LocationCityFilled/>
           </Icon>
-          <span>{{ useLocation.location.ad_info.city + "-" + useLocation.location.ad_info.district }}</span>
+          <span>{{ location }}</span>
         </n-flex>
         <n-flex v-else-if="useLocation.loading" align="center" class="else-city">
           获取定位中
